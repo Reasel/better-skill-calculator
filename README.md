@@ -25,4 +25,3 @@ Requires JDK 11 and a local RuneLite dev build published to mavenLocal.
 
     nix-shell --run "./gradlew run"     # launch RuneLite with this plugin
     ./gradlew test                      # run unit tests
-s
