@@ -83,10 +83,11 @@ class BetterSkillCalculatorPanel extends PluginPanel
 		add(uiInput, c);
 		c.gridy++;
 
-		add(uiCalculator, c);
+		// Manual rate sits above the action list so it's visible without scrolling.
+		add(manualSlot, c);
 		c.gridy++;
 
-		add(manualSlot, c);
+		add(uiCalculator, c);
 		c.gridy++;
 	}
 
