@@ -1,8 +1,8 @@
-# Better Skill Calculator
+# All Skills Calculator
 
 A RuneLite built-in Skill Calculator fork that includes all skills and supports custom rates.
 
-<img src="docs/images/plugin.png" alt="Better Skill Calculator panel" width="260">
+<img src="docs/images/plugin.png" alt="All Skills Calculator panel" width="260">
 
 ## Features
 

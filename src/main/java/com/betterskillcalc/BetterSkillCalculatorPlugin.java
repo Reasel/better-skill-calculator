@@ -38,7 +38,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Better Skill Calculator",
+	name = "All Skills Calculator",
 	description = "Skill calculator for all skills with XP multiplier and custom rates",
 	tags = {"panel", "skilling", "calculator", "xp"}
 )
@@ -62,7 +62,7 @@ public class BetterSkillCalculatorPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
 
 		uiNavigationButton = NavigationButton.builder()
-			.tooltip("Better Skill Calculator")
+			.tooltip("All Skills Calculator")
 			.icon(icon)
 			.priority(6)
 			.panel(uiPanel.get())
