@@ -30,6 +30,7 @@ import com.google.inject.Singleton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -40,11 +41,12 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.SwingConstants;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 import lombok.Getter;
 import static com.betterskillcalc.BetterSkillCalculator.MAX_XP_MULTIPLIER;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.ui.components.FlatTextField;
 
 @Getter
@@ -127,7 +129,9 @@ class UICalculatorInputArea extends JPanel
 	double getXPMultiplierDoubleInput()
 	{
 		Object value = uiFieldXPMultiplier.getValue();
-		return value instanceof Number ? ((Number) value).doubleValue() : 1.0;
+		double raw = value instanceof Number ? ((Number) value).doubleValue() : 1.0;
+		// Round to 1 decimal so accumulated 0.1-step float error (e.g. 1.3000000000000003) doesn't leak into calc.
+		return Math.round(raw * 10.0) / 10.0;
 	}
 
 	void setXPMultiplier(Object value)
@@ -200,7 +204,14 @@ class UICalculatorInputArea extends JPanel
 		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) uiInput.getEditor();
 		JFormattedTextField spinnerTextField = editor.getTextField();
 		spinnerTextField.setHorizontalAlignment(JTextField.LEFT);
-		spinnerTextField.setFormatterFactory(new UnitFormatterFactory(spinnerTextField.getFormatterFactory(), "x"));
+		// Show/parse one decimal with an "x" suffix. valueClass=Double keeps the model a
+		// Double so 0.1 steps stay decimal, and the "0.0" format hides float noise like 1.3000000000000003.
+		DecimalFormat multiplierFormat = new DecimalFormat("0.0'x'");
+		NumberFormatter multiplierFormatter = new NumberFormatter(multiplierFormat);
+		multiplierFormatter.setValueClass(Double.class);
+		multiplierFormatter.setMinimum(1.0);
+		multiplierFormatter.setMaximum((double) max);
+		spinnerTextField.setFormatterFactory(new DefaultFormatterFactory(multiplierFormatter));
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 
