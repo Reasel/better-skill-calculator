@@ -27,9 +27,7 @@ package com.betterskillcalc;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.Provides;
 import net.runelite.api.Client;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.WorldChanged;
 import net.runelite.client.eventbus.Subscribe;
@@ -77,12 +75,6 @@ public class BetterSkillCalculatorPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(uiNavigationButton);
-	}
-
-	@Provides
-	BetterSkillCalculatorConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BetterSkillCalculatorConfig.class);
 	}
 
 	@Subscribe

@@ -13,9 +13,9 @@ repositories {
 	mavenCentral()
 }
 
-// Local dev build of RuneLite (loot-session fork), published via `./gradlew publishAllToMavenLocal`.
-// mavenLocal() is first in repositories so this resolves the modified client. Use 'latest.release' for stock.
-def runeLiteVersion = '1.12.31-SNAPSHOT'
+// Plugin Hub builds against the published RuneLite release from repo.runelite.net.
+// 'latest.release' resolves the newest stock client so hub CI can build this plugin.
+def runeLiteVersion = 'latest.release'
 def pluginMainClass = 'com.betterskillcalc.BetterSkillCalculatorPluginTest'
 
 dependencies {
