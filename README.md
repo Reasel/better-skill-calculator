@@ -2,6 +2,8 @@
 
 A RuneLite sidebar plugin — an extended fork of the built-in Skill Calculator.
 
+<img src="docs/images/plugin.png" alt="Better Skill Calculator panel" width="260">
+
 ## Features
 
 - Every trainable skill in the selector (not only skills with bundled action data).
