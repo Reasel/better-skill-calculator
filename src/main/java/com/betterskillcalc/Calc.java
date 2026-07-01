@@ -36,17 +36,18 @@ public final class Calc
 
 	/**
 	 * Seconds to gain {@code remainingXp} at {@code xpPerHour} times {@code mult}.
-	 * Returns 0 when remaining <= 0; returns -1 when xpPerHour <= 0 (caller hides the line).
+	 * Returns 0 when remaining <= 0 (goal already met, regardless of rate);
+	 * otherwise returns -1 when xpPerHour <= 0 (caller hides the line).
 	 */
 	public static long secondsToTarget(int remainingXp, double xpPerHour, double mult)
 	{
-		if (xpPerHour <= 0)
-		{
-			return -1;
-		}
 		if (remainingXp <= 0)
 		{
 			return 0;
+		}
+		if (xpPerHour <= 0)
+		{
+			return -1;
 		}
 		double perSec = xpPerHour * effMult(mult) / 3600.0;
 		return (long) Math.ceil(remainingXp / perSec);

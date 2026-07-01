@@ -45,6 +45,7 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import lombok.Getter;
 import static com.betterskillcalc.BetterSkillCalculator.MAX_XP_MULTIPLIER;
+import static com.betterskillcalc.BetterSkillCalculator.MIN_XP_MULTIPLIER;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
@@ -142,7 +143,12 @@ class UICalculatorInputArea extends JPanel
 	void setNeededXP(Object value)
 	{
 		uiFieldTargetXP.setToolTipText((String) value);
-		neededXpLabel.setText((String) value);
+		// setText unconditionally resets caret/selection even for identical text,
+		// which would wipe an in-progress copy selection on every focus change.
+		if (!neededXpLabel.getText().equals(value))
+		{
+			neededXpLabel.setText((String) value);
+		}
 	}
 
 	private static int getInput(JTextField field)
@@ -167,27 +173,32 @@ class UICalculatorInputArea extends JPanel
 		((JSpinner.DefaultEditor) field.getEditor()).getTextField().setValue(value);
 	}
 
-	private JTextField addComponent(JPanel parent, String label)
+	/** Shared builder for a labeled FlatTextField; also used by UICustomCalcSlot so styling stays in one place. */
+	static JPanel labeledField(String label, FlatTextField field)
 	{
 		final JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
 
 		final JLabel uiLabel = new JLabel(label);
-		final FlatTextField uiInput = new FlatTextField();
 
-		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		uiInput.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
+		field.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		field.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		field.setBorder(new EmptyBorder(5, 7, 5, 7));
 
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
 		uiLabel.setForeground(Color.WHITE);
 
 		container.add(uiLabel, BorderLayout.NORTH);
-		container.add(uiInput, BorderLayout.CENTER);
+		container.add(field, BorderLayout.CENTER);
 
-		parent.add(container);
+		return container;
+	}
 
+	private JTextField addComponent(JPanel parent, String label)
+	{
+		final FlatTextField uiInput = new FlatTextField();
+		parent.add(labeledField(label, uiInput));
 		return uiInput.getTextField();
 	}
 
@@ -198,7 +209,28 @@ class UICalculatorInputArea extends JPanel
 
 		final JLabel uiLabel = new JLabel(label);
 
-		SpinnerModel model = new SpinnerNumberModel(1.0, 1.0, (double) max, 0.1);
+		// Step from the rounded current value so 0.1 float drift can't leave the
+		// exact min/max unreachable via the arrows (e.g. stuck at 31.9x).
+		SpinnerModel model = new SpinnerNumberModel(MIN_XP_MULTIPLIER, MIN_XP_MULTIPLIER, (double) max, 0.1)
+		{
+			@Override
+			public Object getNextValue()
+			{
+				return step(1);
+			}
+
+			@Override
+			public Object getPreviousValue()
+			{
+				return step(-1);
+			}
+
+			private Object step(int dir)
+			{
+				double next = Math.round((((Number) getValue()).doubleValue() + dir * 0.1) * 10.0) / 10.0;
+				return next < MIN_XP_MULTIPLIER || next > (double) max ? null : next;
+			}
+		};
 		final JSpinner uiInput = new JSpinner(model);
 
 		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) uiInput.getEditor();
@@ -209,7 +241,7 @@ class UICalculatorInputArea extends JPanel
 		DecimalFormat multiplierFormat = new DecimalFormat("0.0'x'");
 		NumberFormatter multiplierFormatter = new NumberFormatter(multiplierFormat);
 		multiplierFormatter.setValueClass(Double.class);
-		multiplierFormatter.setMinimum(1.0);
+		multiplierFormatter.setMinimum(MIN_XP_MULTIPLIER);
 		multiplierFormatter.setMaximum((double) max);
 		spinnerTextField.setFormatterFactory(new DefaultFormatterFactory(multiplierFormatter));
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);

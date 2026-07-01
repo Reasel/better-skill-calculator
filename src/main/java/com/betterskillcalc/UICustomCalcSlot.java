@@ -7,13 +7,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
@@ -25,8 +23,6 @@ import net.runelite.client.ui.components.FlatTextField;
 @Singleton
 class UICustomCalcSlot extends JPanel
 {
-	private static final Pattern NON_NUMERIC = Pattern.compile("[^0-9.]");
-
 	private final FlatTextField xpPerActionField = new FlatTextField();
 	private final FlatTextField xpPerHourField = new FlatTextField();
 	private final JLabel actionsResult = new JLabel();
@@ -73,15 +69,7 @@ class UICustomCalcSlot extends JPanel
 
 	private JPanel buildField(String label, FlatTextField field)
 	{
-		JPanel container = new JPanel(new BorderLayout());
-		JLabel uiLabel = new JLabel(label);
-		uiLabel.setFont(FontManager.getRunescapeSmallFont());
-		uiLabel.setForeground(Color.WHITE);
-		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
-
-		field.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		field.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		field.setBorder(new EmptyBorder(5, 7, 5, 7));
+		JPanel container = UICalculatorInputArea.labeledField(label, field);
 		field.getTextField().addKeyListener(new KeyAdapter()
 		{
 			@Override
@@ -99,8 +87,6 @@ class UICustomCalcSlot extends JPanel
 			}
 		});
 
-		container.add(uiLabel, BorderLayout.NORTH);
-		container.add(field, BorderLayout.CENTER);
 		return container;
 	}
 
@@ -140,9 +126,11 @@ class UICustomCalcSlot extends JPanel
 
 	private static double parse(FlatTextField field)
 	{
+		// Parse the raw text (commas/whitespace tolerated) instead of stripping characters:
+		// stripping silently turned "1e5" into "15" and "-5" into "5".
 		try
 		{
-			String s = NON_NUMERIC.matcher(field.getTextField().getText()).replaceAll("");
+			String s = field.getTextField().getText().replace(",", "").trim();
 			return s.isEmpty() ? 0 : Double.parseDouble(s);
 		}
 		catch (NumberFormatException e)

@@ -74,12 +74,16 @@ import net.runelite.client.ui.components.IconTextField;
 class BetterSkillCalculator extends JPanel
 {
 	static final int MAX_XP_MULTIPLIER = 32;
+	static final double MIN_XP_MULTIPLIER = 1.0;
 	private static final JLabel EMPTY_PANEL = new JLabel("No F2P actions to show.");
+	private static final JLabel NO_DATA_PANEL = new JLabel("<html><center>No action data for this skill.<br>Use the Custom rate section.</center></html>");
 
 	static
 	{
 		EMPTY_PANEL.setHorizontalAlignment(SwingConstants.CENTER);
 		EMPTY_PANEL.setBorder(new EmptyBorder(50, 0, 0, 0));
+		NO_DATA_PANEL.setHorizontalAlignment(SwingConstants.CENTER);
+		NO_DATA_PANEL.setBorder(new EmptyBorder(50, 0, 0, 0));
 	}
 
 	private final UICalculatorInputArea uiInput;
@@ -168,15 +172,8 @@ class BetterSkillCalculator extends JPanel
 			currentCalculator = calculatorType;
 			currentBonuses.clear();
 
-			int endGoal = -1;
-			try
-			{
-				endGoal = client.getVarpValue(endGoalVarpForSkill(skill));
-			}
-			catch (IllegalArgumentException ignored)
-			{
-				// Skill has no XP-drop end-goal varp (e.g. Sailing); leave endGoal = -1.
-			}
+			@Varp int endGoalVarp = endGoalVarpForSkill(skill);
+			int endGoal = endGoalVarp == -1 ? -1 : client.getVarpValue(endGoalVarp);
 
 			if (endGoal != -1)
 			{
@@ -215,6 +212,10 @@ class BetterSkillCalculator extends JPanel
 
 				// Create action slots for the skill actions.
 				renderActionSlots();
+			}
+			else
+			{
+				add(NO_DATA_PANEL);
 			}
 		}
 
@@ -542,7 +543,7 @@ class BetterSkillCalculator extends JPanel
 
 	private static double enforceMultiplierBounds(double input)
 	{
-		return Math.min(MAX_XP_MULTIPLIER, Math.max(1.0, input));
+		return Math.min(MAX_XP_MULTIPLIER, Math.max(MIN_XP_MULTIPLIER, input));
 	}
 
 	private void onSearch()
@@ -631,7 +632,8 @@ class BetterSkillCalculator extends JPanel
 			case FLETCHING:
 				return VarPlayerID.XPDROPS_FLETCHING_END;
 			default:
-				throw new IllegalArgumentException();
+				// Skill has no XP-drop end-goal varp (e.g. Sailing).
+				return -1;
 		}
 	}
 }

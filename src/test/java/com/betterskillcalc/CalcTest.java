@@ -51,6 +51,7 @@ public class CalcTest
 		assertEquals("2h 15m", Calc.formatDuration(8107L));
 		assertEquals(-1L, Calc.secondsToTarget(101_333, 0, 1.0)); // no rate -> hidden
 		assertEquals(0L, Calc.secondsToTarget(0, 45_000, 1.0));
+		assertEquals(0L, Calc.secondsToTarget(0, 0, 1.0)); // goal met wins over missing rate
 	}
 
 	@Test
