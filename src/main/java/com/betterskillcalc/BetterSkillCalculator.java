@@ -97,7 +97,7 @@ class BetterSkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
-	private int xpMultiplier = 1;
+	private double xpMultiplier = 1.0;
 	private final Set<SkillBonus> currentBonuses = new HashSet<>();
 
 	@Inject
@@ -487,7 +487,7 @@ class BetterSkillCalculator extends JPanel
 
 	private void onFieldXPMultiplierUpdated()
 	{
-		xpMultiplier = enforceMultiplierBounds(uiInput.getXPMultiplierInput());
+		xpMultiplier = enforceMultiplierBounds(uiInput.getXPMultiplierDoubleInput());
 		updateInputFields();
 	}
 
@@ -522,9 +522,9 @@ class BetterSkillCalculator extends JPanel
 		return Math.min(Experience.MAX_SKILL_XP, Math.max(0, input));
 	}
 
-	private static int enforceMultiplierBounds(int input)
+	private static double enforceMultiplierBounds(double input)
 	{
-		return Math.min(MAX_XP_MULTIPLIER, Math.max(1, input));
+		return Math.min(MAX_XP_MULTIPLIER, Math.max(1.0, input));
 	}
 
 	private void onSearch()

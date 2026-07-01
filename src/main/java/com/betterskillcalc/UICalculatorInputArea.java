@@ -113,6 +113,12 @@ class UICalculatorInputArea extends JPanel
 		return getInput(uiFieldXPMultiplier);
 	}
 
+	double getXPMultiplierDoubleInput()
+	{
+		Object value = uiFieldXPMultiplier.getValue();
+		return value instanceof Number ? ((Number) value).doubleValue() : 1.0;
+	}
+
 	void setXPMultiplier(Object value)
 	{
 		setInput(uiFieldXPMultiplier, value);
@@ -188,7 +194,7 @@ class UICalculatorInputArea extends JPanel
 
 		final JLabel uiLabel = new JLabel(label);
 
-		SpinnerModel model = new SpinnerNumberModel(1, 1, max, 1);
+		SpinnerModel model = new SpinnerNumberModel(1.0, 1.0, (double) max, 0.1);
 		final JSpinner uiInput = new JSpinner(model);
 
 		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) uiInput.getEditor();
