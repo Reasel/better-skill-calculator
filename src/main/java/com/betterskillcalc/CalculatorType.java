@@ -56,4 +56,17 @@ enum CalculatorType
 	@Nullable
 	private final SkillBonus[] skillBonuses;
 	private final SkillAction[] skillActions;
+
+	@Nullable
+	static CalculatorType getBySkill(Skill skill)
+	{
+		for (CalculatorType type : values())
+		{
+			if (type.getSkill() == skill)
+			{
+				return type;
+			}
+		}
+		return null;
+	}
 }

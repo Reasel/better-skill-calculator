@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import com.google.inject.Singleton;
+import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -88,13 +89,19 @@ class BetterSkillCalculatorPanel extends PluginPanel
 
 	private void addCalculatorButtons()
 	{
-		for (CalculatorType calculatorType : CalculatorType.values())
+		for (Skill skill : Skill.values())
 		{
-			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
+			if (skill == Skill.OVERALL)
+			{
+				continue;
+			}
+
+			final CalculatorType calculatorType = CalculatorType.getBySkill(skill);
+			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(skill, true));
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
 			tab.setOnSelectEvent(() ->
 			{
-				uiCalculator.openCalculator(calculatorType, shouldForceReload);
+				uiCalculator.openCalculator(skill, calculatorType, shouldForceReload);
 				currentTab = tab;
 				shouldForceReload = false;
 				return true;

@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -93,6 +94,7 @@ class BetterSkillCalculator extends JPanel
 	private final IconTextField searchBar = new IconTextField();
 
 	private CalculatorType currentCalculator;
+	private Skill currentSkill;
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
@@ -152,19 +154,28 @@ class BetterSkillCalculator extends JPanel
 		uiInput.getUiFieldXPMultiplier().addFocusListener(buildFocusAdapter(e -> onFieldXPMultiplierUpdated()));
 	}
 
-	void openCalculator(CalculatorType calculatorType, boolean forceReload)
+	void openCalculator(Skill skill, @Nullable CalculatorType calculatorType, boolean forceReload)
 	{
 		// Update internal skill/XP values.
-		currentXP = client.getSkillExperience(calculatorType.getSkill());
+		currentXP = client.getSkillExperience(skill);
 		currentLevel = Experience.getLevelForXp(currentXP);
 
-		if (forceReload || currentCalculator != calculatorType)
+		if (forceReload || currentSkill != skill)
 		{
+			currentSkill = skill;
 			currentCalculator = calculatorType;
 			currentBonuses.clear();
 
-			@Varp int endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
-			int endGoal = client.getVarpValue(endGoalVarp);
+			int endGoal = -1;
+			try
+			{
+				endGoal = client.getVarpValue(endGoalVarpForSkill(skill));
+			}
+			catch (IllegalArgumentException ignored)
+			{
+				// Skill has no XP-drop end-goal varp (e.g. Sailing); leave endGoal = -1.
+			}
+
 			if (endGoal != -1)
 			{
 				targetLevel = Experience.getLevelForXp(endGoal);
@@ -185,20 +196,23 @@ class BetterSkillCalculator extends JPanel
 			// Clear the combined action slots
 			clearCombinedSlots();
 
-			// Add in checkboxes for available skill bonuses if we're not on a F2P world.
-			if (client.getWorldType().contains(WorldType.MEMBERS))
+			if (calculatorType != null)
 			{
-				renderBonusOptions();
+				// Add in checkboxes for available skill bonuses if we're not on a F2P world.
+				if (client.getWorldType().contains(WorldType.MEMBERS))
+				{
+					renderBonusOptions();
+				}
+
+				// Add the combined action slot.
+				add(combinedActionSlot);
+
+				// Add the search bar
+				add(searchBar);
+
+				// Create action slots for the skill actions.
+				renderActionSlots();
 			}
-
-			// Add the combined action slot.
-			add(combinedActionSlot);
-
-			// Add the search bar
-			add(searchBar);
-
-			// Create action slots for the skill actions.
-			renderActionSlots();
 		}
 
 		// Update the input fields.
