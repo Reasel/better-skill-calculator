@@ -1,6 +1,6 @@
 # Better Skill Calculator
 
-A RuneLite sidebar plugin — an extended fork of the built-in Skill Calculator.
+A RuneLite built-in Skill Calculator fork that includes all skills and supports custom rates.
 
 <img src="docs/images/plugin.png" alt="Better Skill Calculator panel" width="260">
 
@@ -9,7 +9,7 @@ A RuneLite sidebar plugin — an extended fork of the built-in Skill Calculator.
 - Every trainable skill in the selector (not only skills with bundled action data).
 - Set **From** and **To** by either level or XP; the panel shows total XP required.
 - Auto-loads your current level and XP for a skill when you open it.
-- **Manual rate** section: enter XP/action and/or XP/hour to get actions-to-target
+- **Custom rate** section: enter XP/action and/or XP/hour to get actions-to-target
   and time-to-target.
 
 ## Attribution

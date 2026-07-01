@@ -52,7 +52,7 @@ class BetterSkillCalculatorPanel extends PluginPanel
 	private boolean shouldForceReload;
 
 	@Inject
-	BetterSkillCalculatorPanel(BetterSkillCalculator skillCalculator, SkillIconManager iconManager, UICalculatorInputArea uiInput, UIManualCalcSlot manualSlot)
+	BetterSkillCalculatorPanel(BetterSkillCalculator skillCalculator, SkillIconManager iconManager, UICalculatorInputArea uiInput, UICustomCalcSlot customSlot)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -83,8 +83,8 @@ class BetterSkillCalculatorPanel extends PluginPanel
 		add(uiInput, c);
 		c.gridy++;
 
-		// Manual rate sits above the action list so it's visible without scrolling.
-		add(manualSlot, c);
+		// Custom rate sits above the action list so it's visible without scrolling.
+		add(customSlot, c);
 		c.gridy++;
 
 		add(uiCalculator, c);

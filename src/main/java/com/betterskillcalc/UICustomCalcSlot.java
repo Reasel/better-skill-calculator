@@ -19,11 +19,11 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
 
 /**
- * Manual rate calculator shown below the action list. Enter XP/action and/or XP/hr;
+ * Custom rate calculator shown below the action list. Enter XP/action and/or XP/hr;
  * shows actions-to-target and time-to-target for the current From->To and multiplier.
  */
 @Singleton
-class UIManualCalcSlot extends JPanel
+class UICustomCalcSlot extends JPanel
 {
 	private static final Pattern NON_NUMERIC = Pattern.compile("[^0-9.]");
 
@@ -36,7 +36,7 @@ class UIManualCalcSlot extends JPanel
 	private double multiplier = 1.0;
 
 	@Inject
-	UIManualCalcSlot()
+	UICustomCalcSlot()
 	{
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -45,7 +45,7 @@ class UIManualCalcSlot extends JPanel
 		JPanel body = new JPanel(new DynamicGridLayout(0, 1, 0, 4));
 		body.setBorder(new EmptyBorder(10, 0, 10, 0));
 
-		JLabel header = new JLabel("Manual rate");
+		JLabel header = new JLabel("Custom rate");
 		header.setForeground(Color.WHITE);
 		header.setFont(FontManager.getRunescapeSmallFont());
 		body.add(header);

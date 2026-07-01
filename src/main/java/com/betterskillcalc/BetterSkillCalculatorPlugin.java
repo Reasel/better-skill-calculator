@@ -41,7 +41,7 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Better Skill Calculator",
-	description = "Skill calculator for all skills with XP multiplier and manual rates",
+	description = "Skill calculator for all skills with XP multiplier and custom rates",
 	tags = {"panel", "skilling", "calculator", "xp"}
 )
 public class BetterSkillCalculatorPlugin extends Plugin
