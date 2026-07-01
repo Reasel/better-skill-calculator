@@ -87,6 +87,7 @@ class BetterSkillCalculator extends JPanel
 	private final ClientThread clientThread;
 	private final SpriteManager spriteManager;
 	private final ItemManager itemManager;
+	private final UIManualCalcSlot manualSlot;
 	private final List<UIActionSlot> uiActionSlots = new ArrayList<>();
 	private final UICombinedActionSlot combinedActionSlot;
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
@@ -103,13 +104,14 @@ class BetterSkillCalculator extends JPanel
 	private final Set<SkillBonus> currentBonuses = new HashSet<>();
 
 	@Inject
-	BetterSkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
+	BetterSkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager, UIManualCalcSlot manualSlot)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.uiInput = uiInput;
 		this.spriteManager = spriteManager;
 		this.itemManager = itemManager;
+		this.manualSlot = manualSlot;
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
 
@@ -195,6 +197,7 @@ class BetterSkillCalculator extends JPanel
 
 			// Clear the combined action slots
 			clearCombinedSlots();
+			uiActionSlots.clear();
 
 			if (calculatorType != null)
 			{
@@ -490,6 +493,7 @@ class BetterSkillCalculator extends JPanel
 		uiInput.setNeededXP(nXP + " XP required to reach target XP");
 		uiInput.setXPMultiplier(xpMultiplier);
 		calculate();
+		manualSlot.update(Calc.remainingXp(currentXP, targetXP), xpMultiplier);
 	}
 
 	private void onFieldCurrentLevelUpdated()

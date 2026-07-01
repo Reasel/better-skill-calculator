@@ -52,7 +52,7 @@ class BetterSkillCalculatorPanel extends PluginPanel
 	private boolean shouldForceReload;
 
 	@Inject
-	BetterSkillCalculatorPanel(BetterSkillCalculator skillCalculator, SkillIconManager iconManager, UICalculatorInputArea uiInput)
+	BetterSkillCalculatorPanel(BetterSkillCalculator skillCalculator, SkillIconManager iconManager, UICalculatorInputArea uiInput, UIManualCalcSlot manualSlot)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -84,6 +84,9 @@ class BetterSkillCalculatorPanel extends PluginPanel
 		c.gridy++;
 
 		add(uiCalculator, c);
+		c.gridy++;
+
+		add(manualSlot, c);
 		c.gridy++;
 	}
 
