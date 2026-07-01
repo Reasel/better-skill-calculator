@@ -39,6 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SwingConstants;
 import lombok.Getter;
 import static com.betterskillcalc.BetterSkillCalculator.MAX_XP_MULTIPLIER;
 import net.runelite.client.ui.ColorScheme;
@@ -56,16 +57,26 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
 	private final JSpinner uiFieldXPMultiplier;
+	private final JLabel neededXpLabel;
 
 	@Inject
 	UICalculatorInputArea()
 	{
-		setLayout(new GridLayout(3, 2, 7, 7));
-		uiFieldCurrentLevel = addComponent("Current Level");
-		uiFieldCurrentXP = addComponent("Current Experience");
-		uiFieldTargetLevel = addComponent("Target Level");
-		uiFieldTargetXP = addComponent("Target Experience");
-		uiFieldXPMultiplier = addMultiplicationSpinnerComponent("XP Multiplier", MAX_XP_MULTIPLIER);
+		setLayout(new BorderLayout(0, 7));
+
+		final JPanel grid = new JPanel(new GridLayout(3, 2, 7, 7));
+		uiFieldCurrentLevel = addComponent(grid, "Current Level");
+		uiFieldCurrentXP = addComponent(grid, "Current Experience");
+		uiFieldTargetLevel = addComponent(grid, "Target Level");
+		uiFieldTargetXP = addComponent(grid, "Target Experience");
+		uiFieldXPMultiplier = addMultiplicationSpinnerComponent(grid, "XP Multiplier", MAX_XP_MULTIPLIER);
+
+		neededXpLabel = new JLabel("", SwingConstants.CENTER);
+		neededXpLabel.setFont(FontManager.getRunescapeSmallFont());
+		neededXpLabel.setForeground(Color.WHITE);
+
+		add(grid, BorderLayout.CENTER);
+		add(neededXpLabel, BorderLayout.SOUTH);
 	}
 
 	int getCurrentLevelInput()
@@ -127,6 +138,7 @@ class UICalculatorInputArea extends JPanel
 	void setNeededXP(Object value)
 	{
 		uiFieldTargetXP.setToolTipText((String) value);
+		neededXpLabel.setText((String) value);
 	}
 
 	private static int getInput(JTextField field)
@@ -163,7 +175,7 @@ class UICalculatorInputArea extends JPanel
 		((JSpinner.DefaultEditor) field.getEditor()).getTextField().setValue(value);
 	}
 
-	private JTextField addComponent(String label)
+	private JTextField addComponent(JPanel parent, String label)
 	{
 		final JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
@@ -182,12 +194,12 @@ class UICalculatorInputArea extends JPanel
 		container.add(uiLabel, BorderLayout.NORTH);
 		container.add(uiInput, BorderLayout.CENTER);
 
-		add(container);
+		parent.add(container);
 
 		return uiInput.getTextField();
 	}
 
-	private JSpinner addMultiplicationSpinnerComponent(String label, int max)
+	private JSpinner addMultiplicationSpinnerComponent(JPanel parent, String label, int max)
 	{
 		final JPanel container = new JPanel();
 		container.setLayout(new BorderLayout());
@@ -211,7 +223,7 @@ class UICalculatorInputArea extends JPanel
 		container.add(uiLabel, BorderLayout.NORTH);
 		container.add(uiInput, BorderLayout.CENTER);
 
-		add(container);
+		parent.add(container);
 
 		return uiInput;
 	}
