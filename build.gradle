@@ -1,0 +1,47 @@
+plugins {
+	id 'java'
+}
+
+repositories {
+	mavenLocal()
+	maven {
+		url = 'https://repo.runelite.net'
+		content {
+			includeGroupByRegex("net\\.runelite.*")
+		}
+	}
+	mavenCentral()
+}
+
+// Local dev build of RuneLite (loot-session fork), published via `./gradlew publishAllToMavenLocal`.
+// mavenLocal() is first in repositories so this resolves the modified client. Use 'latest.release' for stock.
+def runeLiteVersion = '1.12.31-SNAPSHOT'
+def pluginMainClass = 'com.betterskillcalc.BetterSkillCalculatorPluginTest'
+
+dependencies {
+	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
+
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+	testImplementation 'junit:junit:4.12'
+	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
+	testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+}
+
+group = 'com.betterskillcalc'
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+	options.release.set(11)
+}
+
+tasks.register('run', JavaExec) {
+	classpath = sourceSets.test.runtimeClasspath
+	mainClass = pluginMainClass
+
+	// Dev builds are SNAPSHOT and have no published Plugin Hub manifest, so the hub 404s.
+	// Pin to the latest release so the Plugin Hub (browse + install external plugins) works.
+	jvmArgs "-ea", "-Drunelite.pluginhub.version=1.12.30"
+	args "--developer-mode", "--debug"
+}
