@@ -2,6 +2,7 @@ package com.betterskillcalc;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -49,8 +50,11 @@ class UIManualCalcSlot extends JPanel
 		header.setFont(FontManager.getRunescapeSmallFont());
 		body.add(header);
 
-		body.add(buildField("XP per action", xpPerActionField));
-		body.add(buildField("XP per hour", xpPerHourField));
+		JPanel fields = new JPanel(new GridLayout(1, 2, 7, 7));
+		fields.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		fields.add(buildField("XP per action", xpPerActionField));
+		fields.add(buildField("XP per hour", xpPerHourField));
+		body.add(fields);
 
 		styleResult(actionsResult);
 		styleResult(timeResult);
@@ -74,9 +78,9 @@ class UIManualCalcSlot extends JPanel
 		JLabel uiLabel = new JLabel(label);
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 		uiLabel.setForeground(Color.WHITE);
-		uiLabel.setBorder(new EmptyBorder(4, 0, 4, 0));
+		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
 
-		field.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		field.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		field.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		field.setBorder(new EmptyBorder(5, 7, 5, 7));
 		field.getTextField().addKeyListener(new KeyAdapter()

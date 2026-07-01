@@ -57,7 +57,8 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
 	private final JSpinner uiFieldXPMultiplier;
-	private final JLabel neededXpLabel;
+	// Read-only text field (not a JLabel) so the "XP required" value can be selected and copied.
+	private final JTextField neededXpLabel;
 
 	@Inject
 	UICalculatorInputArea()
@@ -71,7 +72,11 @@ class UICalculatorInputArea extends JPanel
 		uiFieldTargetXP = addComponent(grid, "Target Experience");
 		uiFieldXPMultiplier = addMultiplicationSpinnerComponent(grid, "XP Multiplier", MAX_XP_MULTIPLIER);
 
-		neededXpLabel = new JLabel("", SwingConstants.CENTER);
+		neededXpLabel = new JTextField("");
+		neededXpLabel.setEditable(false);
+		neededXpLabel.setBorder(null);
+		neededXpLabel.setOpaque(false);
+		neededXpLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		neededXpLabel.setFont(FontManager.getRunescapeSmallFont());
 		neededXpLabel.setForeground(Color.WHITE);
 
