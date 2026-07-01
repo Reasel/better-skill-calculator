@@ -25,6 +25,7 @@
  */
 package com.betterskillcalc;
 
+import com.betterskillcalc.skills.SkillAction;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,7 +45,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
-import com.betterskillcalc.skills.SkillAction;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -195,4 +195,5 @@ class UIActionSlot extends JPanel
 			uiInfo.setBackground(color);
 		}
 	}
+
 }

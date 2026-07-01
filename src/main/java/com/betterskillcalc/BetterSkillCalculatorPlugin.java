@@ -96,4 +96,5 @@ public class BetterSkillCalculatorPlugin extends Plugin
 		}
 		lastWorldWasMembers = currentWorldIsMembers;
 	}
+
 }

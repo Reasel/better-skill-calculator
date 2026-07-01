@@ -24,11 +24,11 @@
  */
 package com.betterskillcalc;
 
+import com.betterskillcalc.skills.*;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Skill;
-import com.betterskillcalc.skills.*;
 
 @AllArgsConstructor
 @Getter

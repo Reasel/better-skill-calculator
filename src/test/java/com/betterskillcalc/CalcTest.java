@@ -37,6 +37,10 @@ public class CalcTest
 			Calc.actionsToTarget(101_333, 120, 0.0));
 		assertEquals(Calc.actionsToTarget(101_333, 120, 1.0),
 			Calc.actionsToTarget(101_333, 120, -5.0));
+		assertEquals(Calc.secondsToTarget(101_333, 45_000, 1.0),
+			Calc.secondsToTarget(101_333, 45_000, 0.0));
+		assertEquals(Calc.secondsToTarget(101_333, 45_000, 1.0),
+			Calc.secondsToTarget(101_333, 45_000, -5.0));
 	}
 
 	@Test

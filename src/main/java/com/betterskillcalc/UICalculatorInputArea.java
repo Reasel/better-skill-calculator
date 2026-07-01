@@ -119,11 +119,6 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
-	int getXPMultiplierInput()
-	{
-		return getInput(uiFieldXPMultiplier);
-	}
-
 	double getXPMultiplierDoubleInput()
 	{
 		Object value = uiFieldXPMultiplier.getValue();
@@ -146,18 +141,6 @@ class UICalculatorInputArea extends JPanel
 		try
 		{
 			return Integer.parseInt(NON_NUMERIC.matcher(field.getText()).replaceAll(""));
-		}
-		catch (NumberFormatException e)
-		{
-			return 0;
-		}
-	}
-
-	private static int getInput(JSpinner field)
-	{
-		try
-		{
-			return Integer.parseInt(NON_NUMERIC.matcher(field.getModel().getValue().toString()).replaceAll(""));
 		}
 		catch (NumberFormatException e)
 		{

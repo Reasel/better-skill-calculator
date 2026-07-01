@@ -25,6 +25,8 @@
  */
 package com.betterskillcalc;
 
+import com.betterskillcalc.skills.SkillAction;
+import com.betterskillcalc.skills.SkillBonus;
 import com.google.common.annotations.VisibleForTesting;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -63,8 +65,6 @@ import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
-import com.betterskillcalc.skills.SkillAction;
-import com.betterskillcalc.skills.SkillBonus;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;

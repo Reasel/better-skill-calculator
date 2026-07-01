@@ -85,4 +85,5 @@ class UICombinedActionSlot extends JPanel
 	{
 		uiLabelTitle.setText(text);
 	}
+
 }

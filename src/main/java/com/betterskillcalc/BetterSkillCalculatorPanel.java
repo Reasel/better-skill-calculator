@@ -122,4 +122,5 @@ class BetterSkillCalculatorPanel extends PluginPanel
 			SwingUtilities.invokeLater(() -> tabGroup.select(currentTab));
 		}
 	}
+
 }
