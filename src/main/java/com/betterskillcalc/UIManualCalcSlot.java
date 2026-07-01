@@ -41,9 +41,9 @@ class UIManualCalcSlot extends JPanel
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 0, 0, 0));
 
+		// No block background: boxes render on the default panel bg, matching the level/XP inputs.
 		JPanel body = new JPanel(new DynamicGridLayout(0, 1, 0, 4));
-		body.setBorder(new EmptyBorder(10, 10, 10, 10));
-		body.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		body.setBorder(new EmptyBorder(10, 0, 10, 0));
 
 		JLabel header = new JLabel("Manual rate");
 		header.setForeground(Color.WHITE);
@@ -51,7 +51,6 @@ class UIManualCalcSlot extends JPanel
 		body.add(header);
 
 		JPanel fields = new JPanel(new GridLayout(1, 2, 7, 7));
-		fields.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		fields.add(buildField("XP per action", xpPerActionField));
 		fields.add(buildField("XP per hour", xpPerHourField));
 		body.add(fields);
