@@ -6,7 +6,7 @@ A RuneLite built-in Skill Calculator fork that includes all skills and supports 
 
 ## Features
 
-- Every trainable skill in the selector (not only skills with bundled action data).
+- Every trainable skill in the selector, including skills without bundled action data.
 - Set **From** and **To** by either level or XP; the panel shows total XP required.
 - Auto-loads your current level and XP for a skill when you open it.
 - **Custom rate** section: enter XP/action and/or XP/hour to get actions-to-target
